@@ -1,0 +1,87 @@
+image: node:20
+
+stages:
+  - build
+  - test
+  - docker
+  - deploy
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  CI_REGISTRY_IMAGE_UI: $GCP_REGION-docker.pkg.dev/$GCP_PROJECT_ID/$GCP_REPOSITORY
+
+cache:
+  paths:
+    - hexa-order-b2b-ui/node_modules/
+
+# ---------------------------------------
+# BuildING UI
+# ---------------------------------------
+build_ui:
+  stage: build
+  script:
+    - cd hexa-order-b2b-ui
+    - if [ -f package-lock.json ]; then npm ci --legacy-peer-deps; else npm install --legacy-peer-deps; fi
+
+# ---------------------------------------
+# TESTING ANGULAR UI (Karma Headless)
+# ---------------------------------------
+test_ui:
+  stage: test
+  needs:
+    - build_ui
+  before_script:
+    - apt-get update
+    - apt-get install -y chromium
+    - export CHROME_BIN=/usr/bin/chromium
+  script:
+    - cd hexa-order-b2b-ui
+    - npm run test -- --browsers=ChromeHeadlessCI
+
+# ---------------------------------------
+# BUILDING & PUSHING DOCKER IMAGE UI
+# ---------------------------------------
+docker_build_ui:
+  stage: docker
+  image: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+  before_script:
+    # Auth GCP
+    - echo "$GCP_JSON_KEY" | base64 -d > key.json
+    - gcloud auth activate-service-account --key-file=key.json
+    - gcloud config set project $GCP_PROJECT_ID
+
+    # Autoriser Artifact Registry
+    - gcloud auth configure-docker $GCP_REGION-docker.pkg.dev
+
+  script:
+    - gcloud builds submit --tag $CI_REGISTRY_IMAGE/hexa-order-b2b-ui:$CI_COMMIT_REF_NAME hexa-order-b2b-ui/
+
+# ---------------------------------------
+# DEPLOYING UI
+# ---------------------------------------
+deploy_ui:
+  stage: deploy
+  image: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+  before_script:
+    # Auth GCP
+    - echo "$GCP_JSON_KEY" | base64 -d > key.json
+    - gcloud auth activate-service-account --key-file=key.json
+    - gcloud config set project $GCP_PROJECT_ID
+
+    # Installer le plugin gke-gcloud-auth-plugin avec apt-get
+    - apt-get update && apt-get install -y google-cloud-cli-gke-gcloud-auth-plugin
+
+    # Installer kubectl via apt-get
+    - apt-get install -y kubectl
+
+    # Plugin GKE (déjà inclus dans les versions récentes)
+    - export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
+    # Installer Helm
+    - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+    # Credentials cluster
+    - gcloud container clusters get-credentials $GKE_CLUSTER_NAME --region $GCP_REGION --project $GCP_PROJECT_ID
+
+  script:
+    - helm upgrade --install hexa-order-b2b-ui ./hexa-order-b2b-ui/chart-ui --namespace default --create-namespace --set image.repository="$CI_REGISTRY_IMAGE/hexa-order-b2b-ui" --set image.tag="$CI_COMMIT_REF_NAME"

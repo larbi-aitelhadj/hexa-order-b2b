@@ -1,0 +1,171 @@
+# ============================================
+# HexaOrder B2B - Global .gitignore
+# ============================================
+
+# ============================================
+# IDE / Editor
+# ============================================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+.project
+.classpath
+.settings/
+.metadata/
+*.code-workspace
+
+# ============================================
+# Backend (Java/Spring Boot)
+# ============================================
+
+# Maven
+hexa-order-b2b-api/target/
+hexa-order-b2b-api/.mvn/wrapper/maven-wrapper.jar
+hexa-order-b2b-api/mvnw
+hexa-order-b2b-api/mvnw.cmd
+
+# Gradle (if used)
+hexa-order-b2b-api/.gradle/
+hexa-order-b2b-api/build/
+hexa-order-b2b-api/gradle/
+hexa-order-b2b-api/gradlew
+hexa-order-b2b-api/gradlew.bat
+
+# Spring Boot
+hexa-order-b2b-api/*.log
+hexa-order-b2b-api/logs/
+hexa-order-b2b-api/spring.log
+
+# Database files
+hexa-order-b2b-api/*.db
+hexa-order-b2b-api/*.h2.db
+hexa-order-b2b-api/*.mv.db
+hexa-order-b2b-api/*.trace.db
+
+# Compiled files
+hexa-order-b2b-api/**/*.class
+hexa-order-b2b-api/**/*.jar
+hexa-order-b2b-api/**/*.war
+hexa-order-b2b-api/**/*.ear
+
+# ============================================
+# Frontend (Angular/Node.js)
+# ============================================
+
+# Dependencies
+hexa-order-b2b-ui/node_modules/
+hexa-order-b2b-ui/npm-debug.log*
+hexa-order-b2b-ui/yarn-debug.log*
+hexa-order-b2b-ui/yarn-error.log*
+hexa-order-b2b-ui/package-lock.json
+hexa-order-b2b-ui/yarn.lock
+
+# Build output
+hexa-order-b2b-ui/dist/
+hexa-order-b2b-ui/.angular/
+hexa-order-b2b-ui/.tmp/
+hexa-order-b2b-ui/out-tsc/
+hexa-order-b2b-ui/build/
+
+# Angular cache
+hexa-order-b2b-ui/.angular/cache/
+
+# Test coverage
+hexa-order-b2b-ui/coverage/
+hexa-order-b2b-ui/.nyc_output/
+
+# E2E testing
+hexa-order-b2b-ui/e2e/*.js
+hexa-order-b2b-ui/e2e/*.map
+
+# ============================================
+# Docker
+# ============================================
+*.log
+
+# ============================================
+# Operating System
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# Temporary files
+# ============================================
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.orig
+*.rej
+
+# ============================================
+# Environment & Config
+# ============================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.local
+
+# Secrets
+secrets/
+*.key
+*.pem
+*.p12
+*.jks
+
+# ============================================
+# Documentation
+# ============================================
+# Keep README files but ignore generated docs
+hexa-order-b2b-api/docs/generated/
+hexa-order-b2b-ui/docs/generated/
+
+# ============================================
+# Kubernetes / Helm (optional - keep charts)
+# ============================================
+# Uncomment if you don't want to commit Helm charts
+# hexa-order-b2b-api/chart/
+# hexa-order-b2b-ui/chart-ui/
+
+# ============================================
+# CI/CD
+# ============================================
+# Keep .gitlab-ci.yml but ignore pipeline artifacts
+.gitlab/
+.github/workflows/artifacts/
+
+# ============================================
+# Miscellaneous
+# ============================================
+*.pid
+*.seed
+*.pid.lock
+.npm/
+.eslintcache
+.cache/
+.parcel-cache/

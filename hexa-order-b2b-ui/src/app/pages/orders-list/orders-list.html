@@ -1,0 +1,83 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-between mb-3 align-items-center">
+    <h3>📦 Orders</h3>
+    <!-- Bouton PrimeNG -->
+    <p-button
+      label="New Order"
+      icon="pi pi-plus"
+      severity="success"
+      (onClick)="openCreate()">
+    </p-button>
+  </div>
+  <table class="table table-hover shadow-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Total (€)</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let o of orders()">
+        <td>{{ o.id }}</td>
+        <td>
+          <span class="badge"
+                [class.bg-secondary]="o.status === 'CREATED'"
+                [class.bg-success]="o.status === 'CONFIRMED'">
+            {{ o.status }}
+          </span>
+        </td>
+        <td>{{ o.total }}</td>
+        <td>
+            <button
+                class="btn btn-sm btn-outline-primary"
+                (click)="openView(o.id)">
+                View
+            </button>
+        </td>
+        <td>            
+            <button
+                class="btn btn-sm btn-success ms-2"
+                *ngIf="o.status === 'CREATED'"
+                (click)="confirmOrder(o.id)">
+                Confirm
+            </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Dialog PrimeNG -->
+<p-dialog
+  header="🧾 Create Order"
+  [(visible)]="showCreate"
+  [modal]="true"
+  [style]="{ width: '45rem' }"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="true">
+
+  <app-order-create
+    (created)="onCreated()">
+  </app-order-create>
+</p-dialog>
+
+<p-dialog
+  header="📦 Order Details"
+  [(visible)]="showView"
+  [modal]="true"
+  [style]="{ width: '50rem' }"
+  [draggable]="false"
+  [resizable]="false">
+
+  <app-order-detail
+    *ngIf="selectedOrderId"
+    [orderId]="selectedOrderId"
+    (close)="closeView()">
+  </app-order-detail>
+</p-dialog>
+
+<p-confirmDialog></p-confirmDialog>

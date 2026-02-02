@@ -1,0 +1,35 @@
+@if (auth.isAuthenticated()) {
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" routerLink="/">
+        🧩 HexaOrder B2B
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/orders"
+              routerLinkActive="active">
+              Orders
+            </a>
+          </li>
+        </ul>
+        <li class="nav-item ms-2">
+            <button
+                class="btn btn-outline-light btn-sm"
+                (click)="logout()">
+                Logout
+            </button>
+        </li>
+      </div>
+    </div>
+  </nav>
+}

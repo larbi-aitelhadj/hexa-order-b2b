@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="mb-3">
+        <label class="form-label">Client ID</label>
+        <input
+          class="form-control"
+          placeholder="UUID du client"
+          [value]="clientId()"
+          (input)="clientId.set($any($event.target).value)">
+      </div>
+
+      <hr>
+      <h6 class="text-muted mb-3">Order Item</h6>
+
+      <div class="mb-3">
+        <label class="form-label">Product ID</label>
+        <input
+          class="form-control"
+          placeholder="UUID du produit"
+          [value]="productId()"
+          (input)="productId.set($any($event.target).value)">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Quantity</label>
+        <input
+          type="number"
+          min="1"
+          class="form-control"
+          [value]="quantity()"
+          (input)="quantity.set(+$any($event.target).value)">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Unit Price (€)</label>
+        <input
+          type="number"
+          min="0"
+          step="0.01"
+          class="form-control"
+          [value]="unitPrice()"
+          (input)="unitPrice.set(+$any($event.target).value)">
+      </div>
+
+      <div *ngIf="error()" class="alert alert-danger mt-3">
+        {{ error() }}
+      </div>
+    </div>
+
+    <div class="card-footer d-flex justify-content-end gap-2">
+      <button
+        class="btn btn-success"
+        (click)="create()"
+        [disabled]="loading() || !isValid()">
+        <span *ngIf="!loading()">Create Order</span>
+        <span *ngIf="loading()" class="spinner-border spinner-border-sm"></span>
+      </button>
+    </div>
+  </div>
+</div>

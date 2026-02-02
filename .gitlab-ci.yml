@@ -1,0 +1,3 @@
+include:
+  - local: "hexa-order-b2b-api/.gitlab-ci.yml"
+  - local: "hexa-order-b2b-ui/.gitlab-ci.yml"

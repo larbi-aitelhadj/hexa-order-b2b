@@ -1,0 +1,24 @@
+@if (loading()) {
+    <div>Loading...</div>
+}
+
+@if (error()) {
+    <div class="alert alert-danger">
+        {{ error() }}
+    </div>
+}
+
+@if (order()) {
+    <div >
+        <p><strong>ID:</strong> {{ order().id }}</p>
+        <p><strong>Status:</strong> {{ order().status }}</p>
+        <p><strong>Total:</strong> {{ order().total }} €</p>
+
+        <div class="text-end mt-3">
+            <button class="btn btn-secondary" (click)="close.emit()">
+            Close
+            </button>
+        </div>
+    </div>
+}
+
